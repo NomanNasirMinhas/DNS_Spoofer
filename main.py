@@ -14,16 +14,12 @@ def parse_arguments():
     return parser.parse_args()
 
 def process_packet(packet):
-    try:
-        print(packet)
-        if options.drop:
-            packet.drop()
-        elif options.forward:
-            packet.accept()
-    except KeyboardInterrupt:
-        print('Reseting IP Table...')
-        subprocess.call('iptables --flush')
-        print('Exiting...')
+    print(packet)
+    if options.drop:
+        packet.drop()
+    elif options.forward:
+        packet.accept()
+
 
 options = parse_arguments()
 
@@ -35,4 +31,9 @@ elif options.remote:
 
 queue = netfilterqueue.NetfilterQueue()
 queue.bind(0, process_packet)
-queue.run()
+try:
+    queue.run()
+except KeyboardInterrupt:
+    print('Reseting IP Table...')
+    subprocess.call('iptables --flush')
+    print('Exiting...')
