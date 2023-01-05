@@ -5,12 +5,12 @@ import argparse
 def parse_arguments():
     parser = argparse.ArgumentParser()
     scope = parser.add_mutually_exclusive_group(required=True)
-    scope.add_argument('-l', '--local', type=bool, help='Use in Local Mode')
-    scope.add_argument('-r', '--remote', type=bool, help='Use in Remote Mode')
+    scope.add_argument('-l', '--local', action='store', help='Use in Local Mode')
+    scope.add_argument('-r', '--remote', action='store', help='Use in Remote Mode')
 
     mode = parser.add_mutually_exclusive_group(required=True)
-    mode.add_argument('-d', '--drop', type=bool, help='Drop Packets')
-    mode.add_argument('-f', '--forward', type=bool, help='Forward Packets')
+    mode.add_argument('-d', '--drop', action='store', help='Drop Packets')
+    mode.add_argument('-f', '--forward', action='store', help='Forward Packets')
     return parser.parse_args()
 
 def process_packet(packet):
