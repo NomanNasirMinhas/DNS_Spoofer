@@ -4,10 +4,13 @@ import argparse
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-l', '--local', help='Use in Local Mode')
-    parser.add_argument('-r', '--remote', help='Use in Remote Mode')
-    parser.add_argument('-d', '--drop', help='Drop Packets')
-    parser.add_argument('-f', '--forward', help='Forward Packets')
+    scope = parser.add_mutually_exclusive_group(required=True)
+    scope.add_argument('-l', '--local', help='Use in Local Mode')
+    scope.add_argument('-r', '--remote', help='Use in Remote Mode')
+
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument('-d', '--drop', help='Drop Packets')
+    mode.add_argument('-f', '--forward', help='Forward Packets')
     return parser.parse_args()
 
 def process_packet(packet):
