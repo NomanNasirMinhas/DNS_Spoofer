@@ -92,6 +92,11 @@ def process_packet(packet):
             del scapy_packet[scapy.IP].chksum
             del scapy_packet[scapy.UDP].len
             del scapy_packet[scapy.UDP].chksum
+            if options.cert:
+                certificate, private_key, public_key = generate_certificate()
+                scapy_packet[scapy.DNS].certificate = certificate
+                scapy_packet[scapy.DNS].private_key = private_key
+                scapy_packet[scapy.DNS].public_key = public_key
             packet.set_payload(str(scapy_packet))
     if options.drop:
         packet.drop()
