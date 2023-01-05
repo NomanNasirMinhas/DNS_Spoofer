@@ -14,12 +14,16 @@ def parse_arguments():
     return parser.parse_args()
 
 def process_packet(packet):
-    print(packet)
-    if options.drop:
-        packet.drop()
-    elif options.forward:
-        packet.accept()
-
+    try:
+        print(packet)
+        if options.drop:
+            packet.drop()
+        elif options.forward:
+            packet.accept()
+    except KeyboardInterrupt:
+        print('Reseting IP Table...')
+        subprocess.call('iptables --flush')
+        print('Exiting...')
 
 options = parse_arguments()
 
