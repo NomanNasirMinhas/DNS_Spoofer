@@ -1,6 +1,7 @@
 import netfilterqueue
 import subprocess
 import argparse
+import scapy.all as scapy
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
@@ -14,7 +15,8 @@ def parse_arguments():
     return parser.parse_args()
 
 def process_packet(packet):
-    print(packet)
+    scapy_packet = scapy.IP(packet.get_payload())
+    print(scapy_packet.show())
     if options.drop:
         packet.drop()
     elif options.forward:
