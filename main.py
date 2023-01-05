@@ -35,5 +35,5 @@ try:
     queue.run()
 except KeyboardInterrupt:
     print('Reseting IP Table...')
-    subprocess.call('iptables --flush')
+    subprocess.call('iptables --flush', shell=True)
     print('Exiting...')
