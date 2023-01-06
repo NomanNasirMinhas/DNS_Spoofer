@@ -12,7 +12,8 @@ def generate_certificate():
     # Generate a new private key
     private_key = rsa.generate_private_key(
         public_exponent=65537,
-        key_size=2048
+        key_size=2048,
+        backend=default_backend()
     )
 
     # Serialize the private key to PEM format
