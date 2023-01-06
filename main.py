@@ -8,6 +8,9 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import serialization, hashes
 
+print('===========================================')
+print('\t\tDNS Poisoning Tool')
+print('===========================================')
 def generate_certificate():
     # Generate a new private key
     private_key = rsa.generate_private_key(
